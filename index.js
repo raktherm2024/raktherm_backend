@@ -17,11 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded({ extended: false }));
 const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "https://raktherm-backend.vercel.app",
-  ],
+  origin: ["http://localhost:5173", "https://raktherm-backend.vercel.app"],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
