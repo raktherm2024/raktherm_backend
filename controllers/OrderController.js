@@ -1,3 +1,4 @@
+import Customer from "../model/CustomerModel.js";
 import Order from "../model/OrderModel.js";
 
 export const getExistingOrder = async (req, res) => {
@@ -102,4 +103,47 @@ export const removeSpecificOrder = async (req, res) => {
   );
 
   res.status(200).json(updateOrder);
+};
+
+export const submitOrder = async (req, res) => {
+  const { orderId, userId } = req.body;
+
+  const customerDetails = await Customer.findById(userId);
+  const order = await Order.findByIdAndUpdate(
+    orderId,
+    {
+      status: "Pending",
+    },
+    { new: true }
+  );
+
+  const customerNumber = customerDetails.contact;
+
+  if (order) {
+    try {
+      await infobipClient.channels.sms.send({
+        type: "text",
+        messages: [
+          {
+            destinations: [
+              {
+                to: customerNumber,
+              },
+            ],
+            from: "Infosum SDK Test",
+            text: `Thank you for placing your order with RAKtherm, 
+                  \nWe have successfully received your order and it is currently being processed. 
+                    
+                  \nHere are the details of your order: Order Number: ${order.orderNo} 
+                    
+                  \nThank you for choosing RAKtherm. We appreciate your business.`,
+          },
+        ],
+      });
+
+      res.status(200).json(order);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 };
