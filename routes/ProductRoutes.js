@@ -19,6 +19,12 @@ import {
   removePexAdapters,
   removePexPipes,
 } from "../controllers/PEXController.js";
+import {
+  addUpvcPipes,
+  getAllUpvcPipes,
+  getUpvcPipes,
+  removeUpvcPipes,
+} from "../controllers/UPVCController.js";
 
 const router = express.Router();
 
@@ -47,5 +53,12 @@ router.get("/all-pex-adapters", getAllPexAdapters);
 router.get("/pex-adapters", getPexAdapters);
 router.post("/pex-adapters", addPexAdapters);
 router.post("/remove-pex-adapters", removePexAdapters);
+
+// UPVC
+// UPVC PIPES
+router.get("/all-upvc-pipes", getAllUpvcPipes);
+router.get("/upvc-pipes", getUpvcPipes);
+router.post("/upvc-pipes", addUpvcPipes);
+router.post("/remove-upvc-pipes", removeUpvcPipes);
 
 export default router;

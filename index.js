@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import dbConn from "./config/dbConn.js";
 import customerRoutes from "./routes/CustomerRoutes.js";
+import employeeRoutes from "./routes/EmployeeRoutes.js";
 import orderRoutes from "./routes/OrderRoutes.js";
 import authRoutes from "./routes/AuthRoutes.js";
 import productRoutes from "./routes/ProductRoutes.js";
@@ -31,6 +32,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/api/customers", customerRoutes);
+app.use("/api/employee", employeeRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);

@@ -43,6 +43,7 @@ const addCustomers = async (req, res) => {
     customerName,
     location,
     contact,
+    type: "customer",
   });
 
   const newAccount = await Auth.create({

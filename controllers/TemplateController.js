@@ -20,8 +20,6 @@ export const addTemplate = async (req, res) => {
 export const removeTemplate = async (req, res) => {
   const { id } = req.params;
 
-  console.log(id);
-
   const deleteTemplate = await Template.findByIdAndDelete(id);
 
   res.status(200).json(deleteTemplate);

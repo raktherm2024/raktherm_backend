@@ -1,17 +1,14 @@
 import mongoose from "mongoose";
 
-const customerSchema = new mongoose.Schema(
+const employeeSchema = new mongoose.Schema(
   {
-    customerCode: {
+    employeeCode: {
       type: String,
     },
-    customerName: {
+    employeeName: {
       type: String,
     },
     location: {
-      type: String,
-    },
-    contact: {
       type: String,
     },
     type: {
@@ -23,6 +20,6 @@ const customerSchema = new mongoose.Schema(
   }
 );
 
-const Customer = mongoose.model("Customer", customerSchema);
+const Employee = mongoose.model("Employee", employeeSchema);
 
-export default Customer;
+export default Employee;
