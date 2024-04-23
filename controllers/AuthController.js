@@ -8,9 +8,8 @@ export const loginUser = async (req, res) => {
   const user = await Auth.findOne({ email });
 
   if (user && user.password === password) {
-    if (user.userType === "Customer" || user.userType === "Admin") {
+    if (user.userType === "Customer") {
       const customerData = await Customer.findById(user.user);
-
       res.status(200).json({
         userId: user.user,
         customerName: customerData.customerName,
@@ -22,7 +21,6 @@ export const loginUser = async (req, res) => {
       });
     } else {
       const employeeData = await Employee.findById(user.user);
-
       res.status(200).json({
         userId: user.user,
         customerName: employeeData.employeeName,

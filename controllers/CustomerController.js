@@ -55,4 +55,14 @@ const addCustomers = async (req, res) => {
   res.status(200).json({ newCustomer, newAccount });
 };
 
-export { getCustomers, addCustomers };
+const removeCustomer = async (req, res) => {
+  const { id } = req.params;
+
+  const remove = await Customer.findByIdAndDelete(id);
+
+  if (remove) {
+    res.status(200).json({ message: "Customer has been removed!" });
+  }
+};
+
+export { getCustomers, addCustomers, removeCustomer };
