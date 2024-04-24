@@ -9,27 +9,35 @@ export const loginUser = async (req, res) => {
 
   if (user && user.password === password) {
     if (user.userType === "Customer") {
-      const customerData = await Customer.findById(user.user);
-      res.status(200).json({
-        userId: user.user,
-        customerName: customerData.customerName,
-        customerCode: customerData.customerCode,
-        location: customerData.location,
-        contact: customerData.contact,
-        email: user.email,
-        userType: user.userType,
-      });
+      try {
+        const customerData = await Customer.findById(user.user);
+        res.status(200).json({
+          userId: user.user,
+          customerName: customerData.customerName,
+          customerCode: customerData.customerCode,
+          location: customerData.location,
+          contact: customerData.contact,
+          email: user.email,
+          userType: user.userType,
+        });
+      } catch (error) {
+        res.status(401).json(error);
+      }
     } else {
-      const employeeData = await Employee.findById(user.user);
-      res.status(200).json({
-        userId: user.user,
-        customerName: employeeData.employeeName,
-        customerCode: employeeData.employeeCode,
-        location: employeeData.location,
-        contact: "",
-        email: user.email,
-        userType: user.userType,
-      });
+      try {
+        const employeeData = await Employee.findById(user.user);
+        res.status(200).json({
+          userId: user.user,
+          customerName: employeeData.employeeName,
+          customerCode: employeeData.employeeCode,
+          location: employeeData.location,
+          contact: "",
+          email: user.email,
+          userType: user.userType,
+        });
+      } catch (error) {
+        res.status(401).json(error);
+      }
     }
   } else {
     return res.status(401).json({ message: "Invalid email or password" });
