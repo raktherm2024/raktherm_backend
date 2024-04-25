@@ -119,6 +119,18 @@ const updateEmployee = async (req, res) => {
     }
   );
 
+  const authDetails = await Auth.findOne({ user: id });
+
+  await Auth.findByIdAndUpdate(
+    authDetails._id,
+    {
+      userType: type,
+    },
+    {
+      new: true,
+    }
+  );
+
   if (update) {
     res.status(200).json({ message: "Employee has been updated." });
   }
