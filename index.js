@@ -27,6 +27,8 @@ const corsOptions = {
     "https://raktherm-client.vercel.app",
     "https://raktherm-backend.vercel.app/",
     "https://raktherm-client.vercel.app/",
+    "https://online.raktherm.com",
+    "https://online.raktherm.com/",
   ],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,

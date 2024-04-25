@@ -21,21 +21,13 @@ const addCustomers = async (req, res) => {
   const { customerCode, customerName, location, contact, email, password } =
     req.body;
 
-  if (
-    !customerCode ||
-    !customerName ||
-    !location ||
-    !contact ||
-    !email ||
-    !password
-  ) {
+  if (!customerCode || !customerName || !location || !contact) {
     res.status(400).json({ message: "All fields are required!" });
   }
 
   const checkCustomer = await Customer.findOne({ customerCode });
-  const checkAccount = await Auth.findOne({ email });
 
-  if (checkCustomer && checkAccount)
+  if (checkCustomer)
     return res.status(400).json({ message: "Customer is already exist" });
 
   const newCustomer = await Customer.create({
@@ -46,19 +38,16 @@ const addCustomers = async (req, res) => {
     type: "customer",
   });
 
-  const newAccount = await Auth.create({
-    user: newCustomer.id,
-    email,
-    password,
-  });
-
-  res.status(200).json({ newCustomer, newAccount });
+  res.status(200).json({ newCustomer });
 };
 
 const removeCustomer = async (req, res) => {
   const { id } = req.params;
 
   const remove = await Customer.findByIdAndDelete(id);
+  const authDetails = await Auth.findOne({ user: id });
+
+  await Auth.findByIdAndDelete(authDetails._id);
 
   if (remove) {
     res.status(200).json({ message: "Customer has been removed!" });
