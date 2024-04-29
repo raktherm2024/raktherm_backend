@@ -17,6 +17,29 @@ const getCustomers = async (req, res) => {
   res.status(200).json(customer);
 };
 
+const getSpecificCustomer = async (req, res) => {
+  const { id } = req.params;
+
+  const customer = await Customer.aggregate([
+    {
+      $match: {
+        $expr: { $eq: ["$_id", { $toObjectId: id }] },
+      },
+    },
+    {
+      $lookup: {
+        from: "auths",
+        localField: "_id",
+        foreignField: "user",
+        pipeline: [{ $project: { _id: 0, email: 1, password: 1 } }],
+        as: "account",
+      },
+    },
+  ]);
+
+  res.status(200).json(customer);
+};
+
 const addCustomers = async (req, res) => {
   const { customerCode, customerName, location, contact, email, password } =
     req.body;
@@ -45,13 +68,37 @@ const removeCustomer = async (req, res) => {
   const { id } = req.params;
 
   const remove = await Customer.findByIdAndDelete(id);
-  const authDetails = await Auth.findOne({ user: id });
-
-  await Auth.findByIdAndDelete(authDetails._id);
 
   if (remove) {
     res.status(200).json({ message: "Customer has been removed!" });
   }
 };
 
-export { getCustomers, addCustomers, removeCustomer };
+const updateCustomer = async (req, res) => {
+  const { id } = req.params;
+  const { customerName, location, contact } = req.body;
+
+  const update = await Customer.findByIdAndUpdate(
+    id,
+    {
+      customerName: customerName,
+      location: location,
+      contact: contact,
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (update) {
+    res.status(200).json({ message: "Customer has been updated." });
+  }
+};
+
+export {
+  getCustomers,
+  addCustomers,
+  removeCustomer,
+  getSpecificCustomer,
+  updateCustomer,
+};
